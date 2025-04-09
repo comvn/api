@@ -1,30 +1,37 @@
+require("dotenv").config();
 const express = require("express");
-const fs = require("fs");
+const { Logtail } = require("@logtail/node");
+
 const app = express();
 const port = process.env.PORT || 10000;
+const logtail = new Logtail(process.env.LOGTAIL_TOKEN);
 
-app.use(express.json()); // Cho phép đọc JSON body
+app.use(express.json());
 
-// Ghi log mọi request
-app.use((req, res, next) => {
-  const log = `
-[${new Date().toISOString()}] ${req.method} ${req.originalUrl}
-Headers: ${JSON.stringify(req.headers, null, 2)}
-Body: ${JSON.stringify(req.body, null, 2)}
--------------------------
-`;
+// Ghi log toàn bộ request
+app.use(async (req, res, next) => {
+  const logData = {
+    method: req.method,
+    url: req.originalUrl,
+    headers: req.headers,
+    body: req.body,
+  };
 
-  fs.appendFileSync("logs.txt", log); // Ghi log vào file
-  console.log(log); // In ra console để Render hoặc Railway cũng hiển thị
+  // Gửi log đến Logtail
+  await logtail.info("Incoming request", logData);
+
+  // In ra console để xem trên Render/Railway
+  console.log(JSON.stringify(logData, null, 2));
+
   next();
 });
 
 app.get("/", (req, res) => {
-  res.json({ message: "Logging full request!" });
+  res.json({ message: "Hello from Node.js + Logtail API!" });
 });
 
-app.post("/test", (req, res) => {
-  res.json({ received: req.body });
+app.post("/echo", (req, res) => {
+  res.json({ you_sent: req.body });
 });
 
 app.listen(port, () => {

@@ -4,7 +4,7 @@ const { Logtail } = require("@logtail/node");
 
 const app = express();
 const port = process.env.PORT || 10000;
-const logtail = new Logtail(process.env.LOGTAIL_TOKEN);
+const logtail = new Logtail('Ew4KHV2ZLcbekkEeE5sLrQQK');
 
 app.use(express.json());
 

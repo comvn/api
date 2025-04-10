@@ -1,8 +1,9 @@
 require("dotenv").config();
 const express = require("express");
-const Logtail = require("@logtail/js").Logtail;
-
-const logtail = new Logtail(process.env.LOGTAIL_TOKEN);
+const { Logtail } = require("@logtail/node");
+const logtail = new Logtail("Ew4KHV2ZLcbekkEeE5sLrQQK", {
+  endpoint: 'https://eu-nbg-2-vec.betterstackdata.com',
+});
 
 const app = express();
 const port = process.env.PORT || 3000;

@@ -22,7 +22,11 @@ app.use(async (req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.json({ message: "OK" });
+  res.json({ message: "Get OK" });
+});
+
+app.post("/", (req, res) => {
+  res.json({ message: "Post OK" });
 });
 
 app.listen(port, () => {

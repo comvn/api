@@ -18,14 +18,16 @@ app.use(async (req, res, next) => {
     body: req.body,
   };
 
-  await logtail.info("Request received", logData);
+  logtail.info("Request received", logData);
+  // Ensure that all logs are sent to Logtail
+  logtail.flush()
   console.log(JSON.stringify(logData, null, 2));
 
   next();
 });
 
 app.get("/", (req, res) => {
-  res.send("Hello from Logtail-powered API!");
+  res.json({ message: "OK" });
 });
 
 app.listen(port, () => {

@@ -3,12 +3,11 @@ const express = require("express");
 const { Logtail } = require("@logtail/js");
 
 const app = express();
-const port = process.env.PORT || 10000;
 const logtail = new Logtail('Ew4KHV2ZLcbekkEeE5sLrQQK');
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Ghi log toàn bộ request
 app.use(async (req, res, next) => {
   const logData = {
     method: req.method,
@@ -17,23 +16,16 @@ app.use(async (req, res, next) => {
     body: req.body,
   };
 
-  // Gửi log đến Logtail
-  await logtail.info("Incoming request", logData);
+  await logtail.info("Request received", logData);
 
-  // In ra console để xem trên Render/Railway
   console.log(JSON.stringify(logData, null, 2));
-
   next();
 });
 
 app.get("/", (req, res) => {
-  res.json({ message: "Hello from Node.js + Logtail API!" });
-});
-
-app.post("/echo", (req, res) => {
-  res.json({ you_sent: req.body });
+  res.send("Hello with Logtail!");
 });
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });

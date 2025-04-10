@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const { Logtail } = require("@logtail/node");
+const { Node: Logtail } = require("@logtail/js");
 const logtail = new Logtail("Ew4KHV2ZLcbekkEeE5sLrQQK", {
   endpoint: 'https://eu-nbg-2-vec.betterstackdata.com',
 });

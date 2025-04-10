@@ -18,9 +18,16 @@ app.use(async (req, res, next) => {
     body: req.body,
   };
 
-  logtail.info("Request received", logData);
+  //logtail.info("Request received", logData);
   // Ensure that all logs are sent to Logtail
-  logtail.flush()
+  //logtail.flush()
+
+  try {
+    await logtail.info("Request received", logData);
+  } catch (err) {
+    console.error("❌ Logtail error:", err.message);
+  }
+  
   console.log(JSON.stringify(logData, null, 2));
 
   next();

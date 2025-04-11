@@ -8,16 +8,22 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use(async (req, res, next) => {
-  const logData = {
-    method: req.method,
-    url: req.originalUrl,
-    headers: req.headers,
-    body: req.body,
-  };
 
-  
-  console.log(JSON.stringify(logData, null, 2));
+  const userAgent = req.headers['user-agent'] || '';
 
+  if (userAgent.toLowerCase().includes('cron-job.org')) {
+    console.log('cron-job.org is working! Api alive.');
+  }
+  else {
+    const logData = {
+      method: req.method,
+      url: req.originalUrl,
+      headers: req.headers,
+      body: req.body,
+    };
+
+    console.log(JSON.stringify(logData, null, 2));
+  }
   next();
 });
 
